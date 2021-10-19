@@ -1,84 +1,115 @@
 version: 2.1
+# jobs:
+#   node:
+#     working_directory: ~/app
+#     docker:
+#       - image: cimg/node:14.15
+#     steps:
+#       - checkout
+#       - restore_cache:
+#           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+#       - restore_cache:
+#           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+#       - run: yarn install --frozen-lockfile
+#       - save_cache:
+#           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+#           paths:
+#             - ~/.cache/yarn
+#       - save_cache:
+#           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+#           paths:
+#             - node_modules
+
+#       - persist_to_workspace:
+#           root: ~/app
+#           paths:
+#             - node_modules
+
+#   # ios-build:
+#   #   working_directory: ~/app/android
+#   #   macos:
+#   #     xcode: 11.3.0
+
+#   #   steps:
+#   #     - checkout:
+#   #         path: ~/app
+#   #     - attach_workspace:
+#   #         at: ~/app
+#   #     - run: yarn install --frozen-lockfile
+#   #     - restore_cache:
+#   #         key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+#   #     - run:
+#   #         command: pod install
+#   #         working_directory: ios
+#   #     - run:
+#   #         command: xcodebuild clean archive -workspace testCiCdReactNative.xcworkspace -scheme testCiCdReactNative -archivePath testCiCdReactNative.xcarchive CODE_SIGNING_ALLOWED=NO | xcpretty
+#   #         working_directory: ios
+#   #     - save_cache:
+#   #         key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+#   #         paths:
+#   #           - ios/Pods
+
+#   # android-build:
+#   #   working_directory: ~/app/android
+#   #   docker:
+#   #     - image: circleci/android:api-29-node
+#   #   environment:
+#   #     JVM_OPTS: "-Xms512m -Xmx1024m"
+#   #     GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
+#   #   steps:
+#   #     - checkout:
+#   #         path: ~/app
+#   #     - attach_workspace:
+#   #         at: ~/app
+#   #     - run:
+#   #         no_output_timeout: 30m
+#   #         name: Bundle *.aap & *.apk
+#   #         command: ./gradlew bundleRelease assembleRelease --no-daemon --max-workers 2
+#   #     - store_artifacts:
+#   #         path: app/build/outputs/bundle/release
+#   #         destination: release-aab/
+#   #     - store_artifacts:
+#   #         path: app/build/outputs/apk/release
+#   #         destination: release-apk/
+
 jobs:
-  node:
-    working_directory: ~/app
+  build:
+    working_directory: ~/code
     docker:
-      - image: cimg/node:14.15
+      - image: circleci/android:api-26-alpha
+    environment:
+      JVM_OPTS: -Xmx4608m
+    branches:
+      only:
+        - main
     steps:
       - checkout
       - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-      - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-      - run: yarn install --frozen-lockfile
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
       - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
-            - ~/.cache/yarn
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
-
-      - persist_to_workspace:
-          root: ~/app
-          paths:
-            - node_modules
-
-  # ios-build:
-  #   working_directory: ~/app/android
-  #   macos:
-  #     xcode: 11.3.0
-
-  #   steps:
-  #     - checkout:
-  #         path: ~/app
-  #     - attach_workspace:
-  #         at: ~/app
-  #     - run: yarn install --frozen-lockfile
-  #     - restore_cache:
-  #         key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
-  #     - run:
-  #         command: pod install
-  #         working_directory: ios
-  #     - run:
-  #         command: xcodebuild clean archive -workspace testCiCdReactNative.xcworkspace -scheme testCiCdReactNative -archivePath testCiCdReactNative.xcarchive CODE_SIGNING_ALLOWED=NO | xcpretty
-  #         working_directory: ios
-  #     - save_cache:
-  #         key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
-  #         paths:
-  #           - ios/Pods
-
-  # android-build:
-  #   working_directory: ~/app/android
-  #   docker:
-  #     - image: circleci/android:api-29-node
-  #   environment:
-  #     JVM_OPTS: "-Xms512m -Xmx1024m"
-  #     GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
-  #   steps:
-  #     - checkout:
-  #         path: ~/app
-  #     - attach_workspace:
-  #         at: ~/app
-  #     - run:
-  #         no_output_timeout: 30m
-  #         name: Bundle *.aap & *.apk
-  #         command: ./gradlew bundleRelease assembleRelease --no-daemon --max-workers 2
-  #     - store_artifacts:
-  #         path: app/build/outputs/bundle/release
-  #         destination: release-aab/
-  #     - store_artifacts:
-  #         path: app/build/outputs/apk/release
-  #         destination: release-apk/
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Run Tests
+          command: ./gradlew lint test
+      - store_test_results:
+          path: app/build/test-results
+          destination: test-results/
+      - run:
+          name: Initial build
+          command: ./gradlew clean assembleRelease --no-daemon --stacktrace
+      - store_artifacts:
+          path: app/build/outputs/apk/
+          destination: apks/
 
 workflows:
   node-react:
     jobs:
-      - node:
-          filters:
-            branches:
-              only: main
+      - build:
       # - android-build:
       #     requires:
       #       - node
