@@ -78,7 +78,7 @@ workflows:
       - node:
           filters:
             branches:
-              only: dev
+              only: main
       # - android-build:
       #     requires:
       #       - node
