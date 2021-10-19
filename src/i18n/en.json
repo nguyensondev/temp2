@@ -1,0 +1,83 @@
+{
+  "continueFacebook": "Continue with Facebook",
+  "continueAppleId": "Continue with Apple",
+  "continueGoogle": "Continue with Google",
+  "continueTwitter": "Continue with Twitter",
+  "buyMemNFT" : "Buy Membership NFT",
+  "select&Pay" : "Select and Pay",
+  "goldMem" : "Gold Membership",
+  "silverMem" : "Silver Membership",
+  "bronzeMem" : "Bronze Membership",
+  "linkedWallet": "Linked Wallet",
+  "supportingProjects": "Supporting Projects",
+  "myWallet": "My Wallet",
+  "transaction": "Transaction",
+  "balance": "Balance",
+  "chart": "Chart",
+  "purchaseHistory": "Purchase History",
+  "tracklist": "Tracklist",
+  "loadingProjects": "Loading projects...",
+  "confirmLogout": "Do you really want to log out?",
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "back": "Back",
+    "description": "Description",
+    "members": "members",
+    "basePrice": "Base Price",
+    "followers": "Followers",
+    "following": "Following",
+    "more": "More",
+    "less": "Less",
+    "viewMore": "View More",
+    "viewLess": "View Less",
+    "edit": "Edit",
+    "projects": "Projects",
+    "collection": "Collection",
+    "accountSettings": "Account Setting",
+    "viewTransHistory": "View Transaction History",
+    "editWallet": "Edit Wallet",
+    "profile": "Profile",
+    "switchAppLang": "Switch App Language",
+    "pictureInPicture": "Picture in Picture",
+    "viewTerms&Conditions": "View terms and Conditions",
+    "privacyPolicy": "Privacy Policy",
+     "termsService": "Terms of Service",
+      "and": " and ",
+    "logout": "Log out",
+    "login": " Log in",
+    "alreadyHaveAcc": "Already have an account?",
+    "skip": "Skip",
+    "privacy&term" : "By signing up you are agreeing to our Privacy Policy and terms of service",
+    "accPrivacy&term":"Privacy Policy and Terms of Service",
+     "chat": "Chat",
+      "content": "Content"
+  },
+  "errors": {
+    "invalidEmail": "Invalid email address."
+  },
+  "welcomeScreen": {
+    "poweredBy": "POWERED BY IGNITE",
+    "readyForLaunch": "Ready for launch.",
+    "continue": "CONTINUE"
+  },
+  "demoScreen": {
+    "howTo": "HOW TO",
+    "title": "What’s In This Stack?",
+    "tagLine": "Congratulations, you’ve got a very advanced React Native app template here.  Take advantage of this boilerplate!",
+    "reactotron": "Demo Reactotron",
+    "demoList": "Demo List",
+    "androidReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running, run adb reverse tcp:9090 tcp:9090 from your terminal, and reload the app.",
+    "iosReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
+    "macosReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
+    "webReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
+    "windowsReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app."
+  },
+  "demoListScreen": {
+    "title": "Demo List"
+  },
+  "storybook": {
+    "placeholder": "Placeholder",
+    "field": "Field"
+  }
+}
